@@ -146,7 +146,7 @@ namespace MoreAccessoriesKOI.Patches.MainGame
                     }
                 }
 
-                for (int i = 0; i < instructionsList.Count; i++)
+                for (var i = 0; i < instructionsList.Count; i++)
                 {
                     var inst = instructionsList[i];
 

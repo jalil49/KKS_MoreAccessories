@@ -21,6 +21,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EmotionCreators", "EmotionC
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Koikatsu", "Koikatsu\Koikatsu.shproj", "{7B1A016D-5D9F-42CA-8858-53BB0666B0B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HC", "HC\HC.csproj", "{A600CC15-23A8-49DD-8600-66CE7A120855}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Honey Come", "Honey Come", "{9DC97757-737F-4D67-8599-44693137E848}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Core.MoreAccessories\Core.MoreAccessories.projitems*{55827e06-0285-4e96-9ce9-53ce310c382b}*SharedItemsImports = 13
@@ -50,6 +54,10 @@ Global
 		{94578E6D-ECC4-4427-B5ED-2896EACCF25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94578E6D-ECC4-4427-B5ED-2896EACCF25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94578E6D-ECC4-4427-B5ED-2896EACCF25C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A600CC15-23A8-49DD-8600-66CE7A120855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A600CC15-23A8-49DD-8600-66CE7A120855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A600CC15-23A8-49DD-8600-66CE7A120855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A600CC15-23A8-49DD-8600-66CE7A120855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,7 @@ Global
 		{799E8918-D6E9-47AF-9218-466D328960FC} = {AFECFC9A-1211-4AF6-B690-EA414B88B966}
 		{675F51E5-166D-49AD-8B01-45E8959629D7} = {AA2D0D04-E065-437F-89D8-D8D7718AF66D}
 		{94578E6D-ECC4-4427-B5ED-2896EACCF25C} = {B1B0C5C8-A14B-4DE1-A1AE-65E445E40FD1}
+		{A600CC15-23A8-49DD-8600-66CE7A120855} = {9DC97757-737F-4D67-8599-44693137E848}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDFF1C20-A8AF-42FB-8BD8-4B5087BC50F3}
