@@ -65,8 +65,7 @@ namespace MoreAccessoriesKOI.Patches
                     return;
                 }
 
-                var lastValidSlot = Array.FindLastIndex(accessory.parts, x => x.type != 120) + 1;
-                if (lastValidSlot < 20) lastValidSlot = 20;
+                var lastValidSlot =Array.FindLastIndex(accessory.parts, x => x.type != 120);
                 if (lastValidSlot == accessory.parts.Length) return; //don't do below since nothing changed
                 accessory.parts = accessory.parts.Take(lastValidSlot).ToArray();
             }
@@ -108,8 +107,7 @@ namespace MoreAccessoriesKOI.Patches
                 }
 
 
-                var lastValidSlot = Array.FindLastIndex(__instance.accessory.parts, x => x.type != 120) + 1;
-                if (lastValidSlot < 20) lastValidSlot = 20;
+                var lastValidSlot = Math.Max(20, Array.FindLastIndex(__instance.accessory.parts, x => x.type != 120) + 1);
                 if (lastValidSlot == __instance.accessory.parts.Length) return; //don't do below since nothing changed
                 __instance.accessory.parts = __instance.accessory.parts.Take(lastValidSlot).ToArray();
             }
