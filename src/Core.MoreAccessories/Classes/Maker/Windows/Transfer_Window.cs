@@ -16,6 +16,7 @@ namespace MoreAccessoriesKOI
     /// </summary>
     public class Transfer_Window
     {
+        
         public CvsAccessoryChange ChangeWindow { get; private set; }
 
         private MoreAccessories Plugin => MoreAccessories._self;

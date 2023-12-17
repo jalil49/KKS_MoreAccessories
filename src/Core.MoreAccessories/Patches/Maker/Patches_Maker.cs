@@ -82,18 +82,4 @@ namespace MoreAccessoriesKOI.Patches.Maker
             return Math.Min(CustomBase.instance.chaCtrl.nowCoordinate.accessory.parts.Length, MoreAccessories.MakerMode.AccessoriesWindow.CvsAccessoryArray.Length);
         }
     }
-
-#if KKS
-    [HarmonyPatch(typeof(CustomChangeMainMenu), nameof(CustomChangeMainMenu.Initialize))]
-#elif KK || EC
-    [HarmonyPatch(typeof(CustomChangeMainMenu), nameof(CustomChangeMainMenu.Start))]
-#endif
-    internal static class CustomChangeMainMenuInitializePatch
-    {
-        //Fix Window Scroll when toggle is clicked. Added just to make sure the first time you open the window that it is fixed AccessoriesWindow probably handles most if not all other cases
-        private static void Postfix(CustomChangeMainMenu __instance)
-        {
-            __instance.items[4].tglItem.onValueChanged.AddListener(x => { MoreAccessories.MakerMode.AccessoriesWindow.FixWindowScroll(); });
-        }
-    }
 }

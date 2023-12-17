@@ -17,6 +17,7 @@ namespace MoreAccessoriesKOI.Patches.MainGame
         [HarmonyPriority(Priority.First), HarmonyPatch(typeof(ChaControl), nameof(ChaControl.ChangeCoordinateType), new[] { typeof(ChaFileDefine.CoordinateType), typeof(bool) })]
         internal class ChangeCoordinateTypePostFix
         {
+            // private static void Prefix(ChaControl __instance) => ArraySyncCheck(__instance, true);
             private static void Postfix(ChaControl __instance) => ArraySyncCheck(__instance, true);
         }
 
