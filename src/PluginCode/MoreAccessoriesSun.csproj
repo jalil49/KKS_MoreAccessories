@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MoreAccessoriesKOI</RootNamespace>
     <AssemblyName>MoreAccessories</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -206,7 +206,7 @@
   <Import Project="..\packages\IllusionLibs.KoikatsuSunshine.UnityEngine.AudioModule.2019.4.9\build\IllusionLibs.KoikatsuSunshine.UnityEngine.AudioModule.targets" Condition="Exists('..\packages\IllusionLibs.KoikatsuSunshine.UnityEngine.AudioModule.2019.4.9\build\IllusionLibs.KoikatsuSunshine.UnityEngine.AudioModule.targets')" />
   <PropertyGroup>
     <PostBuildEvent>IF EXIST "C:\Sunshine\BepInEx\plugins" (
-xcopy "$(TargetFileName)" "C:\Sunshine\BepInEx\plugins" /S /Y /D
+xcopy "$(TargetPath)" "C:\Sunshine\BepInEx\plugins" /S /Y /D
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\IllusionLibs.BepInEx.MonoMod.21.8.5.1\build\IllusionLibs.BepInEx.MonoMod.targets" Condition="Exists('..\packages\IllusionLibs.BepInEx.MonoMod.21.8.5.1\build\IllusionLibs.BepInEx.MonoMod.targets')" />
