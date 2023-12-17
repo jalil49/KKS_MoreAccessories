@@ -540,20 +540,7 @@ namespace MoreAccessoriesKOI
             }
         }
 #endif
-
-        //private void LateUpdate()
-        //{
-        //    if (_inCharaMaker && _customAcsChangeSlot != null)
-        //    {
-        //        Transform t;
-        //        if (CustomBase.Instance.selectSlot < 20)
-        //            t = _customAcsChangeSlot.items[CustomBase.Instance.selectSlot].cgItem.transform;
-        //        else
-        //            t = _additionalCharaMakerSlots[CustomBase.Instance.selectSlot - 20].canvasGroup.transform;
-        //        t.position = new Vector3(t.position.x, _slotUIPositionY);
-        //    }
-        //}
-
+        
         #endregion
 
         #region Private Methods

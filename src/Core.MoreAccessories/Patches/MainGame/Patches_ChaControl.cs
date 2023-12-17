@@ -20,16 +20,7 @@ namespace MoreAccessoriesKOI.Patches.MainGame
         [HarmonyPriority(Priority.First), HarmonyPatch(typeof(ChaControl), nameof(ChaControl.ChangeCoordinateType), new[] { typeof(ChaFileDefine.CoordinateType), typeof(bool) })]
         internal class ChangeCoordinateType_Patch
         {
-            private static void Prefix(ChaControl __instance)
-            {
-                //Fixes at least one issue with copying a accessories from a larger coordinate to default having at least slot 21 (index 20) having the wrong slot.
-                MoreAccessories.ArraySync(__instance);
-            }
-
-            private static void Postfix(ChaControl __instance)
-            {
-                ArraySyncCheck(__instance, true);
-            }
+            private static void Postfix(ChaControl __instance) => ArraySyncCheck(__instance, true);
         }
 
         [HarmonyPriority(Priority.First), HarmonyPatch(typeof(ChaControl), nameof(ChaControl.SetNowCoordinate), new[] { typeof(ChaFileCoordinate) })]
