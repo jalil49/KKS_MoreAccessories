@@ -11,7 +11,7 @@ namespace MoreAccessoriesKOI.Patches.Maker
         [HarmonyPatch(typeof(CustomAcsChangeSlot), nameof(CustomAcsChangeSlot.Start))]
         [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Harmony Patches - Used Externally")]
         [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Harmony Patches - Used Externally")]
-        private static class CustomAcsChangeSlotStart_Patches
+        private static class CustomAcsChangeSlotStart_Patch
         {
             private static void Postfix(CustomAcsChangeSlot __instance)
             {

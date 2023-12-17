@@ -18,12 +18,24 @@ namespace MoreAccessoriesKOI.Patches.Maker
     {
         private static void Postfix(CvsAccessoryCopy __instance)
         {
-            if (MoreAccessories.MakerMode.CopyWindow == null)
-                MoreAccessories.MakerMode.CopyWindow = new Copy_Window(__instance);
+            MoreAccessories.MakerMode.CopyWindow ??= new Copy_Window(__instance);
         }
     }
-    
-  
+
+    [HarmonyPatch(typeof(CvsAccessoryCopy), nameof(CvsAccessoryCopy.Start))]
+    [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Harmony Patches - Used Externally")]
+    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Harmony Patches - Used Externally")]
+    internal static class CvsAccessoryCopyStart_Patch
+    {
+        private static void Postfix(CvsAccessoryCopy __instance)
+        {
+            foreach (var tmpDropdown in __instance.ddCoordeType)
+            {
+                tmpDropdown.onValueChanged.AddListener(x => MoreAccessories.ArraySync(CustomBase.instance.chaCtrl));
+            }
+        }
+    }
+
     [HarmonyPatch]
     [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Harmony Patches - Used Externally")]
     [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Harmony Patches - Used Externally")]
@@ -106,20 +118,6 @@ namespace MoreAccessoriesKOI.Patches.Maker
         {
             if (CustomBase.instance.chaCtrl == null || MoreAccessories.MakerMode == null || MoreAccessories.MakerMode.AccessoriesWindow == null) return 20;
             return Math.Max(source.parts.Length, destination.parts.Length);
-        }
-    }
-
-    [HarmonyPatch(typeof(CvsAccessoryCopy), nameof(CvsAccessoryCopy.Start))]
-    [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Harmony Patches - Used Externally")]
-    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Harmony Patches - Used Externally")]
-    internal static class CvsAccessoryCopyStart_Patch
-    {
-        private static void Postfix(CvsAccessoryCopy __instance)
-        {
-            foreach (var tmpDropdown in __instance.ddCoordeType)
-            {
-                tmpDropdown.onValueChanged.AddListener(x => MoreAccessories.ArraySync(CustomBase.instance.chaCtrl));
-            }
         }
     }
 }

@@ -42,7 +42,6 @@ namespace MoreAccessoriesKOI
 #endif
 
             SceneManager.sceneLoaded += LevelLoaded;
-
             HasDarkness = typeof(ChaControl).GetMethod("ChangeShakeAccessory", AccessTools.all) != null;
             var harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             var uarHooks = typeof(UniversalAutoResolver).GetNestedType("Hooks", AccessTools.all);
@@ -540,20 +539,7 @@ namespace MoreAccessoriesKOI
             }
         }
 #endif
-
-        //private void LateUpdate()
-        //{
-        //    if (_inCharaMaker && _customAcsChangeSlot != null)
-        //    {
-        //        Transform t;
-        //        if (CustomBase.Instance.selectSlot < 20)
-        //            t = _customAcsChangeSlot.items[CustomBase.Instance.selectSlot].cgItem.transform;
-        //        else
-        //            t = _additionalCharaMakerSlots[CustomBase.Instance.selectSlot - 20].canvasGroup.transform;
-        //        t.position = new Vector3(t.position.x, _slotUIPositionY);
-        //    }
-        //}
-
+        
         #endregion
 
         #region Private Methods

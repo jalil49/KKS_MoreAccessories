@@ -107,18 +107,18 @@ namespace MoreAccessoriesKOI
             var partCount = CustomBase.instance.chaCtrl.nowCoordinate.accessory.parts.Length;
             if (AccessoryTab.items[index].tglItem.isOn && AccessoryTab.items[index].cgItem.alpha < .1f)
             {
-                AccessoryTab.items[index].tglItem.Set(false);
-                AccessoryTab.items[0].tglItem.Set(true);
+                AccessoryTab.items[index].tglItem.Set(false,false);
             }
 #if KK || KKS
-            if (index >= partCount && index < AccessoryTab.items.Length - 2)
+            if (index >= partCount + 2)
 #else
-            if (index >= partCount && index < AccessoryTab.items.Length - 1)
+            if (index >= partCount + 1 )
 #endif
             {
                 AccessoryTab.CloseWindow();
                 AccessoryTab.items[index].tglItem.Set(false);
                 AccessoryTab.items[0].tglItem.Set(true);
+                CustomBase.instance.selectSlot = 0;
             }
 
             FixWindowScroll();
@@ -199,42 +199,8 @@ namespace MoreAccessoriesKOI
             addTenButton.onClick.AddListener(delegate { AddSlot(10); });
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(container);
-#if KK || KKS
-            for (int i = 0, j = AccessoryTab.items.Length - 1; i < 2; j--, i++)
-#else
-            for (int i = 0, j = AccessoryTab.items.Length - 1; i < 1; j--, i++)
-#endif
-            {
-                var data = AccessoryTab.items[j];
-                var temp = i;
-                var index = j;
-                data.tglItem.onValueChanged.AddListener(b =>
-                {
-                    AccessoryTab.CloseWindow();
-                    if (temp == 0) //Transfer Window
-                    {
-                        if (CvsAccessoryArray.Length > 20) //disable slot [index of transfer 22 kk/kks 21 EC] from showing
-                        {
-                            AccessoryTab.items[index].cgItem.Enable(false);
-                        }
 
-                        MoreAccessories.MakerMode.TransferWindow.WindowRefresh();
-                    }
-#if KK || KKS
-                    if (temp == 1) //Copy Window
-                    {
-                        if (CvsAccessoryArray.Length > 21) //disable slot [index of copy 21 kk/kks] from showing
-                        {
-                            AccessoryTab.items[index].cgItem.Enable(false);
-                        }
-
-                        MoreAccessories.MakerMode.CopyWindow.WindowRefresh();
-                    }
-#endif
-                    var t = data.cgItem.transform;
-                    t.position = new Vector3(t.position.x, _slotUIPositionY);
-                });
-            }
+            SlotButtonFunctionality();
 
             //moving this up results in not moving scrollbar
             var transform = _scrollView.verticalScrollbar.transform;
@@ -252,6 +218,16 @@ namespace MoreAccessoriesKOI
             }, 5);
 
             _scrollView.viewport.gameObject.SetActive(false);
+        }
+
+        private void SlotButtonFunctionality()
+        {
+            var itemInfos = AccessoryTab.items;
+            var index = 0;
+            foreach (var itemInfo in itemInfos)
+            {
+                RestoreToggle(itemInfo, index++);
+            }
         }
 
         private void MakeWindowScrollable(Transform slotTransform)
@@ -308,8 +284,13 @@ namespace MoreAccessoriesKOI
         {
             var selectedSlot = AccessoryTab.GetSelectIndex();
             if (selectedSlot < 0) return;
-            var t = AccessoryTab.items[selectedSlot].cgItem.transform;
-            t.position = new Vector3(t.position.x, _slotUIPositionY);
+            FixWindowScroll(AccessoryTab.items[selectedSlot].cgItem);
+        }
+
+        internal void FixWindowScroll(CanvasGroup toggle)
+        {
+            var transform = toggle.transform;
+            transform.position = new Vector3(transform.position.x, _slotUIPositionY);
         }
 
         public void UpdateUI()
@@ -356,10 +337,11 @@ namespace MoreAccessoriesKOI
 
                     var trans = canvasGroup.transform;
                     trans.position = new Vector3(trans.position.x, _slotUIPositionY);
+                    var itemInfo = new UI_ToggleGroupCtrl.ItemInfo() { tglItem = toggle, cgItem = canvasGroup };
 #if KK || KKS
-                    AccessoryTab.items = AccessoryTab.items.ConcatNearEnd(new UI_ToggleGroupCtrl.ItemInfo() { tglItem = toggle, cgItem = canvasGroup });
+                    AccessoryTab.items = AccessoryTab.items.ConcatNearEnd(itemInfo);
 #elif EC
-                    AccessoryTab.items = AccessoryTab.items.ConcatNearEnd(new UI_ToggleGroupCtrl.ItemInfo { tglItem = toggle, cgItem = canvasGroup }, 1);
+                    AccessoryTab.items = AccessoryTab.items.ConcatNearEnd(itemInfo, 1);
 #endif
                     foreach (var selectKind in SelectKind)
                     {
@@ -388,18 +370,16 @@ namespace MoreAccessoriesKOI
                     AccessoryTab.textSlotNames = AccessoryTab.textSlotNames.Concat(cvsAccessory.textSlotName).ToArray();
                     newReactive.Subscribe(delegate
                     {
-                        if (index == customBase.selectSlot && index > customBase.actUpdateCvsAccessory.Length)
+                        if (index == customBase.selectSlot)
                         {
                             customBase.actUpdateCvsAccessory[index]?.Invoke();
                         }
 
-                        if (customBase.actUpdateAcsSlotName.Length > index)
-                            customBase.actUpdateAcsSlotName[index].Invoke();
-                        if (customBase._updateCvsAccessory.Length > index)
-                            customBase._updateCvsAccessory[index].Value = false;
+                        customBase.actUpdateAcsSlotName[index]?.Invoke();
+                        customBase._updateCvsAccessory[index].Value = false;
                     });
 
-                    RestoreToggle(toggle, index);
+                    RestoreToggle(itemInfo, index);
 
                     _addButtonsGroup.SetAsLastSibling();
 
@@ -420,9 +400,8 @@ namespace MoreAccessoriesKOI
                 if (show)
                 {
                     if (slotIndex + 20 == CustomBase.Instance.selectSlot)
-                        Plugin.ExecuteDelayed(() => { info.AccessorySlot.GetComponentInChildren<CvsAccessory>().UpdateCustomUI(); });
-                    if (CvsAccessoryArray.Length > slotIndex + 20)
-                        CvsAccessoryArray[slotIndex + 20].UpdateSlotName();
+                        Plugin.ExecuteDelayed(info.AccessorySlot.GetComponentInChildren<CvsAccessory>().UpdateCustomUI);
+                    CvsAccessoryArray[slotIndex + 20].UpdateSlotName();
                 }
 
                 if (info.transferSlotObject) info.transferSlotObject.SetActive(show);
@@ -472,40 +451,49 @@ namespace MoreAccessoriesKOI
             return newArray;
         }
 
-        private void RestoreToggle(Toggle toggle, int index)
+        private void RestoreToggle(UI_ToggleGroupCtrl.ItemInfo toggleGroup, int index)
         {
-            toggle.OnValueChangedAsObservable().Subscribe(_ =>
+            toggleGroup.tglItem.onValueChanged.RemoveAllListeners();
+            toggleGroup.tglItem.Set(false, false);
+            toggleGroup.tglItem.OnValueChangedAsObservable().Subscribe(toggleEnabled =>
             {
-                if (index >= CustomBase.instance.chaCtrl.nowCoordinate.accessory.parts.Length)
+                if (!toggleEnabled) return;
+                FixWindowScroll(toggleGroup.cgItem);
+                foreach (var accessoryTabItem in AccessoryTab.items)
                 {
-                    ParentWin.ChangeSlot(index, false);
-                    var accessoryMoveWindows = AccessoryTab.customAcsMoveWin;
-                    foreach (var window in accessoryMoveWindows)
-                    {
-                        window.ChangeSlot(index, false);
-                    }
+                    accessoryTabItem.cgItem.Enable(accessoryTabItem.Equals(toggleGroup) && accessoryTabItem.tglItem.isOn);
+                }
 
-                    var accessorySelectKindWindows = AccessoryTab.customAcsSelectKind;
-                    foreach (var window in accessorySelectKindWindows)
-                    {
-                        window.ChangeSlot(index, false);
-                    }
-
+                if (toggleGroup.Equals(AccessoryTab.items[AccessoryTab.items.Length - 1]))
+                {
+                    AccessoryTab.CloseWindow();
+                    Singleton<CustomBase>.Instance.updateCvsAccessoryChange = true;
+                    AccessoryTab.backIndex = index;
                     return;
                 }
+#if KK || KKS
+                if (toggleGroup.Equals(AccessoryTab.items[AccessoryTab.items.Length - 2]))
+                {
+                    AccessoryTab.CloseWindow();
+                    Singleton<CustomBase>.Instance.updateCvsAccessoryCopy = true;
+                    AccessoryTab.backIndex = index;
+                    return;
+                }
+#endif
+                if (CustomBase.instance.chaCtrl == null) return;
 
                 var open = 120 != CustomBase.instance.chaCtrl.nowCoordinate.accessory.parts[index].type;
                 ParentWin.ChangeSlot(index, open);
-                var moveWindows = AccessoryTab.customAcsMoveWin;
-                foreach (var window in moveWindows)
+                foreach (var customAcsMoveWindow in AccessoryTab.customAcsMoveWin)
                 {
-                    window.ChangeSlot(index, open);
+                    if (customAcsMoveWindow)
+                        customAcsMoveWindow.ChangeSlot(index, open);
                 }
 
-                var selectKindsWindows = AccessoryTab.customAcsSelectKind;
-                foreach (var window in selectKindsWindows)
+                foreach (var customAcsSelectKind in AccessoryTab.customAcsSelectKind)
                 {
-                    window.ChangeSlot(index, open);
+                    if (customAcsSelectKind)
+                        customAcsSelectKind.ChangeSlot(index, open);
                 }
 
                 Singleton<CustomBase>.Instance.selectSlot = index;
@@ -516,19 +504,6 @@ namespace MoreAccessoriesKOI
                 }
 
                 AccessoryTab.backIndex = index;
-                FixWindowScroll();
-
-                for (var i = 0; i < AccessoryTab.items.Length; i++)
-                {
-                    var info = AccessoryTab.items[i];
-                    if (index == i && toggle.isOn)
-                    {
-                        info.cgItem.Enable(true);
-                        continue;
-                    }
-
-                    info.cgItem.Enable(false);
-                }
             });
         }
 
