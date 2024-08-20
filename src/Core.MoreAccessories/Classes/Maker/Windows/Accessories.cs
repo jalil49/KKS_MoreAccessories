@@ -388,7 +388,7 @@ namespace MoreAccessoriesKOI
                     AccessoryTab.textSlotNames = AccessoryTab.textSlotNames.Concat(cvsAccessory.textSlotName).ToArray();
                     newReactive.Subscribe(delegate
                     {
-                        if (index == customBase.selectSlot && index > customBase.actUpdateCvsAccessory.Length)
+                        if (index == customBase.selectSlot && customBase.actUpdateCvsAccessory.Length > index)
                         {
                             customBase.actUpdateCvsAccessory[index]?.Invoke();
                         }
