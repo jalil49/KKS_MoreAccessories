@@ -122,7 +122,8 @@ namespace MoreAccessoriesKOI
             for (; i < count; i++)
             {
                 StudioSlotData slot;
-                var accessory = parts[i + 20];
+                var i1 = i + 20;
+                var accessory = parts[i1];
                 if (i < _additionalStudioSlots.Count)
                 {
                     slot = _additionalStudioSlots[i];
@@ -136,11 +137,10 @@ namespace MoreAccessoriesKOI
                     slot.name = slot.slot.GetComponentInChildren<Text>();
                     slot.onButton = slot.slot.GetChild(1).GetComponent<Button>();
                     slot.offButton = slot.slot.GetChild(2).GetComponent<Button>();
-                    slot.name.text = "スロット" + (21 + i);
+                    slot.name.text = "スロット" + (1 + i1);
                     slot.slot.SetParent(_studioToggleTemplate.parent);
                     slot.slot.localPosition = Vector3.zero;
                     slot.slot.localScale = Vector3.one;
-                    var i1 = i + 20;
                     slot.onButton.onClick = new Button.ButtonClickedEvent();
                     slot.onButton.onClick.AddListener(() =>
                     {
@@ -159,9 +159,9 @@ namespace MoreAccessoriesKOI
                 }
                 slot.slot.gameObject.SetActive(true);
                 slot.onButton.interactable = accessory != null && accessory.type != 120;
-                slot.onButton.image.color = slot.onButton.interactable && show[i] ? Color.green : Color.white;
+                slot.onButton.image.color = slot.onButton.interactable && show[i1] ? Color.green : Color.white;
                 slot.offButton.interactable = accessory != null && accessory.type != 120;
-                slot.offButton.image.color = slot.onButton.interactable && !show[i] ? Color.green : Color.white;
+                slot.offButton.image.color = slot.onButton.interactable && !show[i1] ? Color.green : Color.white;
             }
 
             for (; i < _additionalStudioSlots.Count; ++i)
